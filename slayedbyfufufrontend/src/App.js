@@ -1,46 +1,18 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Login from "./pages/login";
-import AdminDashboard from "./pages/AdminDashboard";
-import CustomerPage from "./pages/CustomerPage";
-import PrivateRoute from "./components/PrivateRoute";
+import { useState } from "react";
+import LandingPage from "./pages/LandingPage";
+import LoginPage from "./pages/LoginPage";
+import RegisterPage from "./pages/RegisterPage";
 
 function App() {
-  return (
-    <BrowserRouter>
-      <Routes>
+  const [page, setPage] = useState("landing");
 
-        <Route path="/login" element={<Login />} />
+  const renderPage = () => {
+    if (page === "login") return <LoginPage setPage={setPage} />;
+    if (page === "register") return <RegisterPage setPage={setPage} />;
+    return <LandingPage setPage={setPage} />;
+  };
 
-        <Route
-          path="/admin-dashboard"
-          element={
-            <PrivateRoute role="Administrator">
-              <AdminDashboard />
-            </PrivateRoute>
-          }
-        />
-
-        <Route
-          path="/employee"
-          element={
-            <PrivateRoute role="Employee">
-              <CustomerPage />
-            </PrivateRoute>
-          }
-        />  
-
-        <Route
-          path="/customer"
-          element={
-            <PrivateRoute role="Customer">
-              <CustomerPage />
-            </PrivateRoute>
-          }
-        />
-
-      </Routes>
-    </BrowserRouter>
-  );
+  return <div>{renderPage()}</div>;
 }
 
 export default App;
